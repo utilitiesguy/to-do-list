@@ -1,5 +1,5 @@
 let taskList = document.getElementById('task-list');
-let addButton = document.getElementById('add-task-btn'); // Ujistíme se, že ID odpovídá HTML
+let addButton = document.getElementById('add-task-btn');
 
 // Add Task button functionality
 addButton.addEventListener('click', function() {
@@ -10,14 +10,14 @@ addButton.addEventListener('click', function() {
 });
 
 // Function to add the task to the list
-function addTaskToList(taskValue) {
+function addTaskToList(taskValue, isChecked = false) {
     const taskContainer = document.createElement('div');
     taskContainer.classList.add('task-container');
 
     // Create checkbox for task
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.checked = false;
+    checkbox.checked = isChecked;  // Set checkbox state according to saved data
     checkbox.addEventListener('change', function() {
         updateTaskState(taskContainer, taskValue, checkbox.checked);
     });
@@ -33,7 +33,7 @@ function addTaskToList(taskValue) {
     deleteButton.classList.add('delete-btn');
     deleteButton.addEventListener('click', function() {
         taskContainer.remove();
-        saveTasks();
+        saveTasks();  // Save tasks after delete
     });
 
     taskContainer.appendChild(checkbox);
@@ -57,23 +57,24 @@ function saveTasks() {
         tasks.push({ taskText, isChecked: checkbox.checked });
     });
 
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('tasks', JSON.stringify(tasks));  // Store task state in localStorage
 }
 
 // Load tasks from localStorage and display them
 function loadTasks() {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || []; // Load from localStorage
+
     tasks.forEach(task => {
-        addTaskToList(task.taskText);
+        addTaskToList(task.taskText, task.isChecked);  // Pass task state (isChecked) when adding
+
         const taskContainers = document.querySelectorAll('.task-container');
-        const taskContainer = taskContainers[taskContainers.length - 1];
+        const taskContainer = taskContainers[taskContainers.length - 1]; // Get the last added task
         const checkbox = taskContainer.querySelector('input[type="checkbox"]');
         const taskText = taskContainer.querySelector('.task-text');
 
-        checkbox.checked = task.isChecked;
+        checkbox.checked = task.isChecked;  // Ensure checkbox stays in the correct state
         if (task.isChecked) {
-            taskText.classList.add('checked');
+            taskText.classList.add('checked');  // Apply "checked" style if the task was checked
         }
     });
 }
@@ -82,11 +83,11 @@ function loadTasks() {
 function updateTaskState(taskContainer, taskValue, isChecked) {
     const taskText = taskContainer.querySelector('.task-text');
     if (isChecked) {
-        taskText.classList.add('checked');
+        taskText.classList.add('checked');  // Mark the task as completed
     } else {
-        taskText.classList.remove('checked');
+        taskText.classList.remove('checked');  // Remove completed styling
     }
-    saveTasks();
+    saveTasks();  // Save the updated state to localStorage
 }
 
 // Load tasks on page load
