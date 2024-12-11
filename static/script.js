@@ -21,7 +21,7 @@ function addTask() {
         if (taskValue) {
             // Add task to the list and to cookies
             addTaskToList(taskValue, false); // false indicates not completed
-            saveTaskToCookies(taskValue, false);
+            saveTaskToCookies(taskValue, false); // Save task with initial unchecked state
             taskInput.value = ''; // Clear the input field after adding the task
         } else {
             alert("Task cannot be empty!"); // Show alert if input is empty
