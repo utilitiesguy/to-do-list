@@ -1,93 +1,147 @@
-let taskList = document.getElementById('task-list');
-let addButton = document.getElementById('add-task-btn'); // Ujistíme se, že ID odpovídá HTML
+/* Global reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-// Add Task button functionality
-addButton.addEventListener('click', function() {
-    let taskInput = prompt("Enter your task: ");
-    if (taskInput) {
-        addTaskToList(taskInput);
+/* Body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #e7e7e7;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Header */
+h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #4caf50;
+    margin-bottom: 30px;
+}
+
+/* Add Task Section */
+.add-task-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.add-btn {
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.add-btn:hover {
+    background-color: #45a049;
+}
+
+/* Task List */
+#task-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    margin-bottom: 15px;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.task-container:hover {
+    background-color: #f1f1f1;
+}
+
+.task-text {
+    font-size: 18px;
+    flex-grow: 1;
+    margin-left: 10px;
+    transition: color 0.3s ease;
+}
+
+.checked {
+    text-decoration: line-through;
+    color: #b5b5b5;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    margin-right: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Delete Button */
+.delete-btn {
+    padding: 8px 15px;
+    font-size: 16px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #e60000;
+}
+
+/* Smooth transitions for task addition */
+.task-container,
+.add-btn {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
     }
-});
 
-// Function to add the task to the list
-function addTaskToList(taskValue) {
-    const taskContainer = document.createElement('div');
-    taskContainer.classList.add('task-container');
-
-    // Create checkbox for task
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = false;
-    checkbox.addEventListener('change', function() {
-        updateTaskState(taskContainer, taskValue, checkbox.checked);
-    });
-
-    // Create task text
-    const taskText = document.createElement('span');
-    taskText.classList.add('task-text');
-    taskText.textContent = taskValue;
-
-    // Create delete button
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete Task';
-    deleteButton.classList.add('delete-btn');
-    deleteButton.addEventListener('click', function() {
-        taskContainer.remove();
-        saveTasks();
-    });
-
-    taskContainer.appendChild(checkbox);
-    taskContainer.appendChild(taskText);
-    taskContainer.appendChild(deleteButton);
-
-    taskList.appendChild(taskContainer);
-
-    // Save tasks after adding
-    saveTasks();
-}
-
-// Save tasks (checkbox state and task list) to localStorage
-function saveTasks() {
-    const tasks = [];
-    const taskContainers = document.querySelectorAll('.task-container');
-
-    taskContainers.forEach(taskContainer => {
-        const checkbox = taskContainer.querySelector('input[type="checkbox"]');
-        const taskText = taskContainer.querySelector('.task-text').textContent;
-        tasks.push({ taskText, isChecked: checkbox.checked });
-    });
-
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
-// Load tasks from localStorage and display them
-function loadTasks() {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    
-    tasks.forEach(task => {
-        addTaskToList(task.taskText);
-        const taskContainers = document.querySelectorAll('.task-container');
-        const taskContainer = taskContainers[taskContainers.length - 1];
-        const checkbox = taskContainer.querySelector('input[type="checkbox"]');
-        const taskText = taskContainer.querySelector('.task-text');
-
-        checkbox.checked = task.isChecked;
-        if (task.isChecked) {
-            taskText.classList.add('checked');
-        }
-    });
-}
-
-// Update task state when checkbox is clicked
-function updateTaskState(taskContainer, taskValue, isChecked) {
-    const taskText = taskContainer.querySelector('.task-text');
-    if (isChecked) {
-        taskText.classList.add('checked');
-    } else {
-        taskText.classList.remove('checked');
+    .add-task-container {
+        flex-direction: column;
+        align-items: center;
     }
-    saveTasks();
-}
 
-// Load tasks on page load
-document.addEventListener('DOMContentLoaded', loadTasks);
+    .task-input {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .task-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
