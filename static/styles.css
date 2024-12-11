@@ -1,9 +1,11 @@
+/* Reset margins and paddings for consistency */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* Global Styles */
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f9f9f9;
@@ -24,86 +26,60 @@ h1 {
     margin-bottom: 20px;
 }
 
-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
-
-#add-task-btn {
-    background-color: #4caf50;
-    color: white;
-    margin: 10px 0;
-}
-
-#add-task-btn:hover {
-    background-color: #45a049;
-}
-
 .task-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     padding: 10px;
     border-bottom: 1px solid #ccc;
     transition: background-color 0.2s ease-in-out;
 }
 
-.task-container:hover {
-    background-color: #f1f1f1;
-}
-
-input[type="text"] {
-    flex: 1;
-    padding: 8px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-input[type="checkbox"] {
-    margin-right: 10px;
-}
-
 .checked {
     text-decoration: line-through;
     color: #666;
+    background-color: #f7f7f7;
 }
 
 .delete-btn {
     background-color: #ff5555;
-    color: white;
+    border: none;
     padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
 }
 
 .delete-btn:hover {
-    background-color: #ff4444;
+    background-color: #e7e7e7;
+}
+
+.add-btn {
+    padding: 5px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.add-btn:hover {
+    background-color: #45a049;
+}
+
+.task-input {
+    padding: 5px;
+    margin-right: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 /* Responsive Styles */
 @media (max-width: 600px) {
     .container {
         margin: 20px auto;
-        padding: 15px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
     }
 
     .task-container {
-        flex-wrap: wrap;
-        padding: 8px;
-    }
-
-    button {
-        font-size: 14px;
-        padding: 8px 10px;
+        padding: 5px;
     }
 }
