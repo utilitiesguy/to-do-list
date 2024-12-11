@@ -43,6 +43,7 @@ h1 {
     margin-bottom: 20px;
 }
 
+/* Posunutí tlačítka Add Task */
 .add-btn {
     padding: 12px 25px;
     font-size: 16px;
@@ -52,7 +53,8 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 10px;
+    margin-bottom: 20px; /* Posunutí tlačítka nahoru */
+    margin-top: 0; /* Odstranění horního marginu */
 }
 
 .add-btn:hover {
