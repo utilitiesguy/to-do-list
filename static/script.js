@@ -1,5 +1,5 @@
 let taskList = document.getElementById('task-list');
-let addButton = document.getElementById('add-btn');
+let addButton = document.getElementById('add-task-btn'); // Ujistíme se, že ID odpovídá HTML
 
 // Add Task button functionality
 addButton.addEventListener('click', function() {
