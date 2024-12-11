@@ -36,6 +36,14 @@ h1 {
     margin-bottom: 20px;  /* Sníženo pro větší prostor nad tlačítkem */
 }
 
+/* Header */
+h2 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #ADD8E6;
+    margin-bottom: 20px;  /* Sníženo pro větší prostor nad tlačítkem */
+}
+
 /* Add Task Section */
 .add-task-container {
     display: flex;
