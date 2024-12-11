@@ -1,107 +1,93 @@
-document.getElementById('add-task-btn').addEventListener('click', addTask);
+let taskList = document.getElementById('task-list');
+let addButton = document.getElementById('add-btn');
 
-window.addEventListener('DOMContentLoaded', loadTasksFromCookies);
+// Add Task button functionality
+addButton.addEventListener('click', function() {
+    let taskInput = prompt("Enter your task: ");
+    if (taskInput) {
+        addTaskToList(taskInput);
+    }
+});
 
-function addTask() {
-    const taskInput = document.createElement('input');
-    taskInput.type = 'text';
-    taskInput.placeholder = 'Enter new task...';
-    taskInput.classList.add('task-input');
-
-    const addButton = document.createElement('button');
-    addButton.textContent = 'Add';
-    addButton.classList.add('add-btn');
-
-    addButton.addEventListener('click', function() {
-        const taskValue = taskInput.value.trim();
-        if (taskValue) {
-            // Add task to the list and to cookies
-            addTaskToList(taskValue, false); // false indicates not completed
-            saveTaskToCookies(taskValue, false); // Save task with initial unchecked state
-            taskInput.value = ''; // Clear the input field after adding the task
-        } else {
-            alert("Task cannot be empty!"); // Show alert if input is empty
-        }
-    });
-
-    const taskContainer = document.createElement('div');
-    taskContainer.className = 'task-container';
-    taskContainer.appendChild(taskInput);
-    taskContainer.appendChild(addButton);
-
-    document.getElementById('task-list').appendChild(taskContainer);
-}
-
-function addTaskToList(taskValue, isChecked) {
+// Function to add the task to the list
+function addTaskToList(taskValue) {
     const taskContainer = document.createElement('div');
     taskContainer.classList.add('task-container');
 
+    // Create checkbox for task
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.checked = isChecked;
-
+    checkbox.checked = false;
     checkbox.addEventListener('change', function() {
-        const taskText = taskContainer.querySelector('.task-text');
-        if (checkbox.checked) {
-            taskText.classList.add('checked');
-        } else {
-            taskText.classList.remove('checked');
-        }
-        saveTasksState();
+        updateTaskState(taskContainer, taskValue, checkbox.checked);
     });
 
+    // Create task text
     const taskText = document.createElement('span');
-    taskText.textContent = taskValue;
     taskText.classList.add('task-text');
+    taskText.textContent = taskValue;
 
+    // Create delete button
     const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
+    deleteButton.textContent = 'Delete Task';
     deleteButton.classList.add('delete-btn');
-
     deleteButton.addEventListener('click', function() {
         taskContainer.remove();
-        removeTaskFromCookies(taskValue);
-        saveTasksState();
+        saveTasks();
     });
 
     taskContainer.appendChild(checkbox);
     taskContainer.appendChild(taskText);
     taskContainer.appendChild(deleteButton);
 
-    document.getElementById('task-list').appendChild(taskContainer);
+    taskList.appendChild(taskContainer);
+
+    // Save tasks after adding
+    saveTasks();
 }
 
-function saveTaskToCookies(taskValue, isChecked) {
-    const tasks = getTasksFromCookies();
-    tasks.push({ task: taskValue, done: isChecked });
-    document.cookie = `tasks=${encodeURIComponent(JSON.stringify(tasks))}; path=/to-do-list`;
-}
-
-function removeTaskFromCookies(taskValue) {
-    const tasks = getTasksFromCookies();
-    const updatedTasks = tasks.filter(task => task.task !== taskValue);
-    document.cookie = `tasks=${encodeURIComponent(JSON.stringify(updatedTasks))}; path=/to-do-list`;
-}
-
-function getTasksFromCookies() {
-    const cookies = document.cookie.split('; ').find(row => row.startsWith('tasks='));
-    return cookies ? JSON.parse(decodeURIComponent(cookies.split('=')[1])) : [];
-}
-
-function loadTasksFromCookies() {
-    const tasks = getTasksFromCookies();
-    tasks.forEach(task => {
-        addTaskToList(task.task, task.done);
-    });
-}
-
-function saveTasksState() {
+// Save tasks (checkbox state and task list) to localStorage
+function saveTasks() {
     const tasks = [];
     const taskContainers = document.querySelectorAll('.task-container');
-    taskContainers.forEach(container => {
-        const checkbox = container.querySelector('input[type="checkbox"]');
-        const taskText = container.querySelector('.task-text').textContent;
-        tasks.push({ task: taskText, done: checkbox.checked });
+
+    taskContainers.forEach(taskContainer => {
+        const checkbox = taskContainer.querySelector('input[type="checkbox"]');
+        const taskText = taskContainer.querySelector('.task-text').textContent;
+        tasks.push({ taskText, isChecked: checkbox.checked });
     });
-    document.cookie = `tasks=${encodeURIComponent(JSON.stringify(tasks))}; path=/to-do-list`;
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 }
+
+// Load tasks from localStorage and display them
+function loadTasks() {
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    
+    tasks.forEach(task => {
+        addTaskToList(task.taskText);
+        const taskContainers = document.querySelectorAll('.task-container');
+        const taskContainer = taskContainers[taskContainers.length - 1];
+        const checkbox = taskContainer.querySelector('input[type="checkbox"]');
+        const taskText = taskContainer.querySelector('.task-text');
+
+        checkbox.checked = task.isChecked;
+        if (task.isChecked) {
+            taskText.classList.add('checked');
+        }
+    });
+}
+
+// Update task state when checkbox is clicked
+function updateTaskState(taskContainer, taskValue, isChecked) {
+    const taskText = taskContainer.querySelector('.task-text');
+    if (isChecked) {
+        taskText.classList.add('checked');
+    } else {
+        taskText.classList.remove('checked');
+    }
+    saveTasks();
+}
+
+// Load tasks on page load
+document.addEventListener('DOMContentLoaded', loadTasks);
