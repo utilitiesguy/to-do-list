@@ -20,8 +20,8 @@ function addTask() {
         const taskValue = taskInput.value.trim();
         if (taskValue) {
             // Add task to the list and to cookies
-            addTaskToList(taskValue);
-            saveTaskToCookies(taskValue);
+            addTaskToList(taskValue, false); // false indicates not completed
+            saveTaskToCookies(taskValue, false);
             taskInput.value = ''; // Clear the input field after adding the task
         } else {
             alert("Task cannot be empty!"); // Show alert if input is empty
@@ -38,7 +38,7 @@ function addTask() {
     document.getElementById('task-list').appendChild(taskContainer);
 }
 
-function addTaskToList(taskValue) {
+function addTaskToList(taskValue, isChecked) {
     // Create a container for each task
     const taskContainer = document.createElement('div');
     taskContainer.classList.add('task-container');
@@ -46,6 +46,7 @@ function addTaskToList(taskValue) {
     // Checkbox to mark task as completed
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
+    checkbox.checked = isChecked; // Set checkbox to be checked or unchecked based on the saved state
 
     // Add event listener for checking/unchecking the task
     checkbox.addEventListener('change', function() {
@@ -55,7 +56,7 @@ function addTaskToList(taskValue) {
         } else {
             taskText.classList.remove('checked');
         }
-        // Save the state of tasks to cookies
+        // Save the updated checkbox state to cookies
         saveTasksState();
     });
 
@@ -84,15 +85,15 @@ function addTaskToList(taskValue) {
     document.getElementById('task-list').appendChild(taskContainer);
 }
 
-function saveTaskToCookies(taskValue) {
+function saveTaskToCookies(taskValue, isChecked) {
     const tasks = getTasksFromCookies();
-    tasks.push(taskValue);
+    tasks.push({ task: taskValue, done: isChecked });
     document.cookie = `tasks=${encodeURIComponent(JSON.stringify(tasks))}; path=/to-do-list`;
 }
 
 function removeTaskFromCookies(taskValue) {
     const tasks = getTasksFromCookies();
-    const updatedTasks = tasks.filter(task => task !== taskValue);
+    const updatedTasks = tasks.filter(task => task.task !== taskValue);
     document.cookie = `tasks=${encodeURIComponent(JSON.stringify(updatedTasks))}; path=/to-do-list`;
 }
 
@@ -103,7 +104,9 @@ function getTasksFromCookies() {
 
 function loadTasksFromCookies() {
     const tasks = getTasksFromCookies();
-    tasks.forEach(task => addTaskToList(task));
+    tasks.forEach(task => {
+        addTaskToList(task.task, task.done); // Pass task status (checked or not) to addTaskToList
+    });
 }
 
 function saveTasksState() {
@@ -112,11 +115,7 @@ function saveTasksState() {
     taskContainers.forEach(container => {
         const checkbox = container.querySelector('input[type="checkbox"]');
         const taskText = container.querySelector('.task-text').textContent;
-        if (checkbox.checked) {
-            tasks.push({ task: taskText, done: true });
-        } else {
-            tasks.push({ task: taskText, done: false });
-        }
+        tasks.push({ task: taskText, done: checkbox.checked });
     });
     document.cookie = `tasks=${encodeURIComponent(JSON.stringify(tasks))}; path=/to-do-list`;
 }
