@@ -1,5 +1,8 @@
 document.getElementById('add-task-btn').addEventListener('click', addTask);
 
+// Load tasks from cookies on page load
+window.addEventListener('DOMContentLoaded', loadTasksFromCookies);
+
 function addTask() {
     const taskInput = document.createElement('input');
     taskInput.type = 'text';
@@ -10,6 +13,7 @@ function addTask() {
     addButton.addEventListener('click', () => {
         if (taskInput.value.trim()) {
             addTaskToList(taskInput.value.trim());
+            saveTaskToCookies(taskInput.value.trim());
             taskInput.value = ''; // Clear input after adding
         }
     });
@@ -32,27 +36,4 @@ function addTaskToList(taskValue) {
     const taskText = document.createElement('span');
     taskText.textContent = taskValue;
 
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.classList.add('delete-btn');
-    deleteButton.addEventListener('click', () => {
-        taskContainer.remove();
-        removeTaskFromCookie(taskValue);
-    });
-
-    taskContainer.appendChild(checkbox);
-    taskContainer.appendChild(taskText);
-    taskContainer.appendChild(deleteButton);
-
-    document.getElementById('task-list').appendChild(taskContainer);
-
-    saveTaskToCookie(taskValue);
-}
-
-function saveTaskToCookie(taskValue) {
-    document.cookie = `task_${encodeURIComponent(taskValue)}=true; path=/`;
-}
-
-function removeTaskFromCookie(taskValue) {
-    document.cookie = `task_${encodeURIComponent(taskValue)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
-}
+    const deleteButton = document.createElement('
