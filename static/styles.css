@@ -40,7 +40,7 @@ h1 {
 .add-task-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .add-btn {
@@ -52,7 +52,7 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 10px;  /* Posunutí tlačítka o trochu nahoru */
+    margin-top: 5px;  /* Posunutí tlačítka o trochu nahoru */
 }
 
 .add-btn:hover {
@@ -63,11 +63,12 @@ h1 {
 #task-list {
     list-style-type: none;
     padding: 0;
+    text-align: center; /* Tento řádek zajistí, že všechny úkoly budou zarovnány na střed */
 }
 
 .task-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Zajistí, že všechny prvky budou na střed */
     align-items: center;
     background-color: #f9f9f9;
     margin-bottom: 15px;
@@ -75,6 +76,7 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease;
+    width: 100%; /* Přizpůsobí šířku */
 }
 
 .task-container:hover {
@@ -86,6 +88,7 @@ h1 {
     flex-grow: 1;
     margin-left: 10px;
     transition: color 0.3s ease;
+    text-align: center; /* Tímto bude text úkolu zarovnaný na střed */
 }
 
 .checked {
