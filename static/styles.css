@@ -43,20 +43,6 @@ h1 {
     margin-bottom: 20px;
 }
 
-.task-input {
-    font-size: 16px;
-    padding: 12px;
-    width: 70%;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    margin-right: 10px;
-    transition: border-color 0.3s ease;
-}
-
-.task-input:focus {
-    border-color: #4caf50;
-}
-
 .add-btn {
     padding: 12px 25px;
     font-size: 16px;
@@ -66,6 +52,7 @@ h1 {
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 10px;
 }
 
 .add-btn:hover {
