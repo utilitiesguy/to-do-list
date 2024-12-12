@@ -7,14 +7,14 @@
 
 /* Body styling */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #e7e7e7;
-    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 20px;
+    min-height: 100vh;  /* Zajistí, že stránka bude mít minimální výšku */
+    margin: 0;
+    padding: 25px 0;  /* 25px mezera nahoře a dole */
 }
 
 .container {
